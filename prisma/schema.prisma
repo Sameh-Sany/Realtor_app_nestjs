@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,7 +11,7 @@ model User {
   id               Int       @id @default(autoincrement())
   name             String
   phone            String
-  email            String
+  email            String    @unique
   password         String
   created_at       DateTime  @default(now())
   updated_at       DateTime  @updatedAt
@@ -36,9 +33,9 @@ model Home {
   propertyType        PropertyType
   created_at          DateTime     @default(now())
   updated_at          DateTime     @updatedAt
-  images              Image[]
   relator_id          Int
   relator             User         @relation(fields: [relator_id], references: [id])
+  images              Image[]
   message             Message[]
 }
 
@@ -55,11 +52,11 @@ model Message {
   id         Int    @id @default(autoincrement())
   message    String
   home_id    Int
-  home       Home   @relation(fields: [home_id], references: [id])
   realtor_id Int
-  realtor    User   @relation("realtor_messages", fields: [realtor_id], references: [id])
   buyer_id   Int
   buyer      User   @relation("buyer_messages", fields: [buyer_id], references: [id])
+  home       Home   @relation(fields: [home_id], references: [id])
+  realtor    User   @relation("realtor_messages", fields: [realtor_id], references: [id])
 }
 
 enum PropertyType {
