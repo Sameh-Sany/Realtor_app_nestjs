@@ -12,10 +12,6 @@ export class UserInterceptor implements NestInterceptor {
 
     const token = request?.headers?.authorization?.split('Bearer ')[1];
 
-    if (!token) {
-      throw new UnauthorizedException();
-    }
-
     const user = jwt.decode(token);
 
     request.user = user;
